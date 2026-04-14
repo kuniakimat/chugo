@@ -488,9 +488,12 @@
 <!-- PAGE 4: 参考：チャート集 -->
 <div class="page" id="page-charts">
 <div class="page-inner">
-  <div style="margin-bottom:28px">
-    <p style="font-family:var(--serif);font-size:13px;line-height:2.0;color:rgba(255,255,255,.58)">各次元に対応する松村チャート。</p>
+  <!-- Hero chart: 広福観 -->
+  <div style="margin-bottom:52px">
+    <img id="hero-chart" src="" style="width:100%;display:block;border-radius:8px;opacity:0;transition:opacity .4s">
+    <div style="margin-top:8px;font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.08em">人称軸・時間軸に関連</div>
   </div>
+  <!-- Axis charts -->
   <div id="chart-accordion"></div>
 </div>
 </div>
@@ -660,75 +663,33 @@ const INTEGRATED_CHARTS = [
 ];
 
 /* ── Build chart accordion ─────────────── */
+// Set hero chart
+(function(){
+  var hero = document.getElementById('hero-chart');
+  if (hero && window.__IMGS__ && window.__IMGS__['IMG_8']) {
+    hero.src = window.__IMGS__['IMG_8'];
+    hero.style.opacity = '1';
+  }
+})();
+
 (function buildCharts(){
   const container = document.getElementById('chart-accordion');
   allAxes.forEach(a => {
     const data = CHART_DATA[a.id];
     if (!data) return;
-    const realCharts = data.charts.filter(c => !c.integrated);
-
-    // Section header
-    const hdr = document.createElement('div');
-    hdr.id = 'chartsec-' + a.id;
-    hdr.style.cssText = 'margin-top:32px;margin-bottom:12px';
-    hdr.innerHTML = '<div style="font-family:var(--serif);font-size:15px;color:rgba(255,255,255,.82)">' + a.name + '軸</div>'
-      + '<div style="font-size:11px;color:rgba(255,255,255,.40);margin-top:3px;line-height:1.5">' + a.q + '</div>';
-    container.appendChild(hdr);
-
-    // Charts flat - skip empty
+    const realCharts = data.charts.filter(c => !c.integrated && c.img);
+    if (realCharts.length === 0) return;
     realCharts.forEach(c => {
-      if (!c.img) return;
       const card = document.createElement('div');
       card.className = 'chart-card';
-      card.style.marginBottom = '12px';
-      card.innerHTML = '<div class="chart-card-label">' + c.label + '</div>'
-        + '<div class="chart-img-wrap">'
-        + '<img src="' + c.img + '" alt="' + c.label + '" style="width:100%">'
+      card.style.marginBottom = '32px';
+      card.innerHTML = '<div class="chart-img-wrap"><img src="' + c.img + '" alt="' + c.label + '" style="width:100%"></div>'
+        + '<div style="padding:8px 12px 10px;font-size:11px;color:rgba(255,255,255,.40);letter-spacing:.06em">'
+        + c.label + ' <span style="color:rgba(130,175,255,.35);margin-left:8px">— ' + a.name + '軸</span>'
         + '</div>';
       container.appendChild(card);
     });
-
-    // Cross-links to integrated
-    var crossLinks = data.charts.filter(function(c){ return c.integrated; });
-    crossLinks.forEach(function(c) {
-      var lk2 = document.createElement('div');
-      lk2.style.cssText = 'padding:6px 0';
-      var intId = 'integrated-' + c.integrated;
-      var txt = c.label.replace('→ ', '');
-      var lk2span = document.createElement('span');
-      lk2span.className = 'chart-link';
-      lk2span.innerHTML = '📊 ' + txt;
-      lk2span.addEventListener('click', (function(id){
-        return function(){ var el = document.getElementById(id); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); };
-      })(intId));
-      lk2.appendChild(lk2span);
-      container.appendChild(lk2);
-    });
   });
-  // Integrated charts section at bottom
-  if (INTEGRATED_CHARTS.length > 0) {
-    const divider = document.createElement('div');
-    divider.style.cssText = 'margin-top:36px;padding-top:24px;border-top:1px solid rgba(255,255,255,.07)';
-    divider.innerHTML = '<div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:16px">統合チャート — 複数の次元にまたがる図</div>';
-    container.appendChild(divider);
-
-    INTEGRATED_CHARTS.forEach(ic => {
-      const card = document.createElement('div');
-      card.className = 'chart-card';
-      card.id = `integrated-${ic.id}`;
-      card.style.marginBottom = '16px';
-
-      const axisNames = ic.axes.map(id => allAxes.find(a => a.id === id)?.name + '軸').join(' × ');
-      card.innerHTML = `
-        <div class="chart-card-label">${ic.label} <span style="color:rgba(130,175,255,.5);margin-left:6px">${axisNames}</span></div>
-        <div class="chart-img-wrap">
-          ${ic.img
-            ? `<img src="${ic.img}" alt="${ic.label}" style="width:100%">`
-            : `<div class="chart-placeholder">画像を追加予定</div>`}
-        </div>`;
-      divider.appendChild(card);
-    });
-  }
 })();
 
 /* ── Chart links in frame/japan/diag cards ── */
