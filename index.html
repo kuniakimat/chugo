@@ -346,7 +346,7 @@
     <div class="tab active" data-page="frame">フレーム紹介</div>
     <div class="tab" data-page="japan">日本の診断</div>
     <div class="tab" data-page="diag">あなたの診断</div>
-    <div class="tab" data-page="charts">参考：チャート集</div>
+    <div class="tab" data-page="charts">関連チャート集</div>
   </div>
 </nav>
 
@@ -674,12 +674,15 @@ const INTEGRATED_CHARTS = [
 
 (function buildCharts(){
   const container = document.getElementById('chart-accordion');
+  const shownImgs = new Set();
   allAxes.forEach(a => {
     const data = CHART_DATA[a.id];
     if (!data) return;
     const realCharts = data.charts.filter(c => !c.integrated && c.img);
     if (realCharts.length === 0) return;
     realCharts.forEach(c => {
+      if (shownImgs.has(c.img)) return;
+      shownImgs.add(c.img);
       const card = document.createElement('div');
       card.className = 'chart-card';
       card.style.marginBottom = '32px';
