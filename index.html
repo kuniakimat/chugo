@@ -455,7 +455,7 @@
 <!-- PAGE 3 -->
 <div class="page" id="page-diag">
   <div class="diag-score-bar">
-    <h3>あなたの診断</h3>
+    <h3>あなたの診断 <span style="font-size:11px;color:rgba(255,255,255,.30);letter-spacing:.08em;font-weight:300">（試作版）</span></h3>
     <div class="score-block">
       <span style="font-size:10px;letter-spacing:.12em;color:rgba(130,175,255,.80);margin-right:8px">合計</span>
       <span class="score-num" id="scoreNum">0</span>
@@ -836,7 +836,7 @@ function openChartTab(axisId) {
       <div class="jp-cells">${cellsHtml}</div>
       <div class="jp-body">${a.jpDesc}</div>
       <span class="symptom">→ ${a.symptom}</span>
-      <div style="margin-top:10px">${makeChartLink(a.id)}</div>`;
+      `;
     container.appendChild(card);
   });
 })();
@@ -898,10 +898,7 @@ function calcPattern(L,C,R){
         row.appendChild(cell);
       });
       card.appendChild(row);
-      const cl = document.createElement('div');
-      cl.style.paddingTop = '6px';
-      cl.innerHTML = makeChartLink(a.id);
-      card.appendChild(cl);
+
       body.appendChild(card);
 
       /* result row */
