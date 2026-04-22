@@ -343,10 +343,10 @@
 <nav class="nav">
   <div class="nav-title">多元中合</div>
   <div class="tabs">
-    <div class="tab active" data-page="frame">フレーム紹介</div>
+    <div class="tab active" data-page="frame">中合軸の紹介</div>
     <div class="tab" data-page="japan">日本の診断</div>
     <div class="tab" data-page="diag">あなたの診断</div>
-    <div class="tab" data-page="charts">関連チャート集</div>
+    <div class="tab" data-page="charts">関連チャート解説</div>
   </div>
 </nav>
 
@@ -358,6 +358,10 @@
   <div class="frame-hero">
     <h2>多元中合</h2>
     <p>人は何かに偏る。<br>問題は偏りではなく、両極のあいだの関係が失われることだ。</p>
+  </div>
+
+  <div style="margin-bottom:32px;padding:16px 20px;border-left:2px solid rgba(255,255,255,.10);background:#0e1018;border-radius:0 8px 8px 0">
+    <p style="font-size:13px;line-height:2.1;color:rgba(255,255,255,.52);font-family:var(--serif)">これは自分の思索の目次のようなものである。花も実もまだつけていないが、大事な幹として、ここに置いておく。</p>
   </div>
 
   <!-- Triangle -->
@@ -491,6 +495,7 @@
   <!-- Map of Frameworks: 全体像 -->
   <div style="margin-bottom:48px">
     <img id="map-chart" src="" style="width:100%;display:block;border-radius:8px;opacity:0;transition:opacity .4s">
+    <div id="map-note" style="padding:8px 0 0;display:flex;gap:8px;flex-wrap:wrap"></div>
   </div>
   <!-- 広福観 -->
   <div style="margin-bottom:52px">
@@ -545,7 +550,7 @@ const CATS = [
       symptom:'変化が遅い。成長より現状維持。' },
 
     { id:'monokoro', name:'物心',
-      q:'実在として捉えるか、意味として捉えるか',
+      q:'世界を物として掴むか、意味として読むか——人間はその両方に生きている',
       cells:['物','身','心'], descs:['機能・品質','体験・統合','感情・意味'],
       lv:[3,0,3], jpLv:[3,0,3],
       meaning:'物か、心か。<br><br>機能だけでは満たされず、感情だけでは続かない。<br><br>体験は、その結び目にある。',
@@ -642,15 +647,15 @@ const allAxes = CATS.flatMap(c => c.axes.map(a => ({...a, sub:c.sub})));
 
 /* CHART DATA - charts: [{label, img}] */
 const CHART_DATA = {
-  kankei:   { charts: [{ label: '関係相の構造（圧×熱）', img: window.__IMGS__['IMG_0'] }, { label: '相転移モデル', img: '' }, { label: '→ 多相広福の旅（統合チャート）', img: '', integrated: 'koufuku-matrix' }] },
-  jikan:    { charts: [{ label: '時間相の構造（滅性×切性）', img: window.__IMGS__['IMG_1'] }, { label: '→ 多相広福の旅（統合チャート）', img: '', integrated: 'koufuku-matrix' }] },
-  monokoro: { charts: [{ label: '九好 - 目的の所在', img: window.__IMGS__['IMG_2'] }, { label: 'Leadership System（5E model）', img: window.__IMGS__['IMG_5E'] }, { label: 'Interflow System of Value Realization', img: window.__IMGS__['IMG_6'] }] },
-  shinpuku: { charts: [{ label: '振幅軸チャート', img: '' }] },
-  sa:       { charts: [{ label: '9 Key Features - 美質の種類', img: window.__IMGS__['IMG_3'] }] },
+  kankei:   { notes: [{"title": "知性の熱力学 — 関係相の個人史と日本の課題", "url": "https://note.com/kuniakimat/n/n7cdc62a496c2"}, {"title": "知性の熱力学（による自己紹介）", "url": "https://note.com/kuniakimat/n/nb6fc6c6f08bf"}, {"title": "思考の生ログ 情報処理様式", "url": "https://note.com/kuniakimat/n/n0a0af6eacee4"}, {"title": "AI長雑談 生命起源の超臨界流体と勾配社会", "url": "https://note.com/kuniakimat/n/n305da44b2aac"}], charts: [{ label: '関係相の構造（圧×熱）', img: window.__IMGS__['IMG_0'] }, { label: '相転移モデル', img: '' }, { label: '→ 多相広福の旅（統合チャート）', img: '', integrated: 'koufuku-matrix' }] },
+  jikan:    { notes: [{"title": "48歳に自覚する時間の構造", "url": "https://note.com/kuniakimat/n/nfe1aefc199df"}], charts: [{ label: '時間相の構造（滅性×切性）', img: window.__IMGS__['IMG_1'] }, { label: '→ 多相広福の旅（統合チャート）', img: '', integrated: 'koufuku-matrix' }] },
+  monokoro: { notes: [{"title": "リーダーシップのシステム（5E model）", "url": "https://note.com/kuniakimat/n/necef283c9f41"}], charts: [{ label: '九好 - 目的の所在', img: window.__IMGS__['IMG_2'] }, { label: 'Leadership System（5E model）', img: window.__IMGS__['IMG_5E'] }, { label: 'Interflow System of Value Realization', img: window.__IMGS__['IMG_6'] }] },
+  shinpuku: { notes: [{"title": "光に意味があるのは、影があるからだ", "url": "https://note.com/kuniakimat/n/nebf2db8a95e6"}], charts: [{ label: '振幅軸チャート', img: '' }] },
+  sa:       { notes: [{"title": "9 Key Features — 美質の種類", "url": "https://note.com/kuniakimat/n/n5aecd9b4a6f9"}], charts: [{ label: '9 Key Features - 美質の種類', img: window.__IMGS__['IMG_3'] }] },
   hossetsu: { charts: [{ label: '包摂スコープ図', img: '' }] },
-  ninshiki: { charts: [{ label: '9 Key Features - 美質の種類', img: window.__IMGS__['IMG_3'] }] },
-  okan:     { charts: [{ label: '仕事観のフレームワーク', img: window.__IMGS__['IMG_NEW1'] }, { label: '関係環 — 年代の役割自覚（回役）', img: window.__IMGS__['IMG_NEW2'] }] },
-  yakuwari: { charts: [{ label: 'Engagement Quad - 役が駆動する仕組み', img: window.__IMGS__['IMG_4'] }, { label: '個人と社会の関係モデル', img: window.__IMGS__['IMG_5'] }] },
+  ninshiki: { notes: [{"title": "9 Key Features — 美質の種類", "url": "https://note.com/kuniakimat/n/n5aecd9b4a6f9"}], charts: [{ label: '9 Key Features - 美質の種類', img: window.__IMGS__['IMG_3'] }] },
+  okan:     { notes: [{"title": "後半生の楽しみ方 ー 関係環", "url": "https://note.com/kuniakimat/n/n1a9abbd33544"}], charts: [{ label: '仕事観のフレームワーク', img: window.__IMGS__['IMG_NEW1'] }, { label: '関係環 — 年代の役割自覚（回役）', img: window.__IMGS__['IMG_NEW2'] }] },
+  yakuwari: { notes: [{"title": "「役」で紡ぐエンゲージメント", "url": "https://note.com/kuniakimat/n/n0fffc907c990"}, {"title": "役の幸福", "url": "https://note.com/kuniakimat/n/nf6063132ddf1"}], charts: [{ label: 'Engagement Quad - 役が駆動する仕組み', img: window.__IMGS__['IMG_4'] }, { label: '個人と社会の関係モデル', img: window.__IMGS__['IMG_5'] }] },
   souryu:   { charts: [{ label: 'Interflow System of Value Realization', img: window.__IMGS__['IMG_6'] }] },
   kodo:     { charts: [{ label: 'Formation of Strategies Framework', img: window.__IMGS__['IMG_KODO'] }] },
   ketsugou: { charts: [] },
@@ -663,7 +668,7 @@ const INTEGRATED_CHARTS = [
     id: 'koufuku-matrix',
     label: '多相広福の旅 — 関係相×時間相',
     axes: ['kankei', 'jikan'],
-    img: window.__IMGS__['IMG_8']
+    img: window.__IMGS__['IMG_8'], notes: [{"title": "広福観①", "url": "https://note.com/kuniakimat/n/ncd6cbf597983"}, {"title": "広福観②", "url": "https://note.com/kuniakimat/n/ndd5e08cfedab"}, {"title": "広福観③", "url": "https://note.com/kuniakimat/n/nb3176e1d4cd5"}, {"title": "広福観④", "url": "https://note.com/kuniakimat/n/n6a5693ce55cb"}, {"title": "広福観⑤", "url": "https://note.com/kuniakimat/n/nff3c848a667b"}]
   },
 ];
 
@@ -675,6 +680,11 @@ const INTEGRATED_CHARTS = [
     map.src = window.__IMGS__['IMG_MAP'];
     map.style.opacity = '1';
   }
+  // Add map note link
+  var mapNote = document.getElementById('map-note');
+  if (mapNote) {
+    mapNote.innerHTML = '<div style="display:flex;justify-content:flex-end;align-items:center;gap:8px;padding-top:8px"><span style="font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.06em">関連記事：</span><a href="https://note.com/kuniakimat/n/n3acd068985a8" target="_blank" class="chart-link" style="font-size:11px;display:inline-flex;align-items:center;gap:3px"><span>📝</span>フレームワークマップ</a></div>';
+  }
   var hero = document.getElementById('hero-chart');
   if (hero && window.__IMGS__ && window.__IMGS__['IMG_8']) {
     hero.src = window.__IMGS__['IMG_8'];
@@ -685,6 +695,15 @@ const INTEGRATED_CHARTS = [
 (function buildCharts(){
   const container = document.getElementById('chart-accordion');
   const shownImgs = new Set();
+
+  function noteLinksHtml(notes) {
+    if (!notes || notes.length === 0) return '';
+    var links = notes.map(function(n) {
+      return '<a href="' + n.url + '" target="_blank" class="chart-link" style="font-size:11px;display:inline-flex;align-items:center;gap:3px"><span>📝</span>' + n.title + '</a>';
+    }).join('');
+    return '<div style="padding:6px 12px 8px;display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;align-items:center"><span style="font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.06em;margin-right:4px">関連記事：</span>' + links + '</div>';
+  }
+
   allAxes.forEach(a => {
     const data = CHART_DATA[a.id];
     if (!data) return;
@@ -697,16 +716,35 @@ const INTEGRATED_CHARTS = [
       card.className = 'chart-card';
       card.style.marginBottom = '32px';
       card.innerHTML = '<div class="chart-img-wrap"><img src="' + c.img + '" alt="' + c.label + '" style="width:100%"></div>'
-        + '<div style="padding:8px 12px 10px;font-size:11px;color:rgba(255,255,255,.40);letter-spacing:.06em">'
+        + '<div style="padding:8px 12px 4px;font-size:11px;color:rgba(255,255,255,.40);letter-spacing:.06em">'
         + c.label + ' <span style="color:rgba(130,175,255,.35);margin-left:8px">— ' + a.name + '軸</span>'
-        + '</div>';
+        + '</div>'
+        + noteLinksHtml(data.notes);
       container.appendChild(card);
     });
+  });
+
+  // Integrated charts with notes
+  INTEGRATED_CHARTS.forEach(ic => {
+    if (!ic.img) return;
+    const card = document.createElement('div');
+    card.className = 'chart-card';
+    card.style.marginBottom = '32px';
+    card.id = 'integrated-' + ic.id;
+    const axisNames = ic.axes.map(id => { const a = allAxes.find(a => a.id === id); return a ? a.name + '軸' : ''; }).join(' × ');
+    card.innerHTML = '<div class="chart-img-wrap"><img src="' + ic.img + '" alt="' + ic.label + '" style="width:100%"></div>'
+      + '<div style="padding:8px 12px 4px;font-size:11px;color:rgba(255,255,255,.40);letter-spacing:.06em">'
+      + ic.label + ' <span style="color:rgba(130,175,255,.35);margin-left:8px">— ' + axisNames + '</span>'
+      + '</div>'
+      + noteLinksHtml(ic.notes);
+    container.appendChild(card);
   });
 })();
 
 /* ── Chart links in frame/japan/diag cards ── */
 function buildFrameChartAccordion(axisId) {
+  const axisData = allAxes.find(a => a.id === axisId);
+  const articles = axisData && axisData.articles ? axisData.articles : [];
   const data = CHART_DATA[axisId];
   const integrated = INTEGRATED_CHARTS.filter(ic => ic.axes.includes(axisId));
   const realCharts = data ? data.charts.filter(c => !c.integrated && c.img) : [];
@@ -716,6 +754,11 @@ function buildFrameChartAccordion(axisId) {
 
   const uid = 'facc-' + axisId;
   // Build chart cards HTML
+  let articlesHtml = articles.length > 0
+    ? '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;align-items:center;padding:8px 0 4px"><span style="font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.06em;margin-right:4px">関連記事：</span>'
+      + articles.map(a => '<a href="' + a.url + '" target="_blank" class="chart-link" style="font-size:11px;display:inline-flex;align-items:center;gap:3px"><span>📝</span>' + a.title + '</a>').join('')
+      + '</div>'
+    : '';
   let cardsHtml = realCharts.map(c =>
     '<div class="chart-card" style="margin-bottom:8px">'
     + '<div class="chart-card-label">' + c.label + '</div>'
@@ -731,12 +774,13 @@ function buildFrameChartAccordion(axisId) {
     + '</div></div>'
   ).join('');
 
+  if (total === 0 && articles.length === 0) return '';
   return '<div style="margin-top:14px;border-top:1px solid rgba(255,255,255,.07);padding-top:12px">'
     + '<div style="display:flex;align-items:center;justify-content:flex-end;cursor:pointer;padding:4px 0" onclick="toggleFrameAcc(\''  + uid + '\')">'
     + '<span style="font-size:11px;letter-spacing:.08em;color:rgba(130,175,255,.65)">📊 関連チャート（' + total + '枚）</span>'
     + '<span id="' + uid + '-icon" style="font-size:14px;color:rgba(255,255,255,.28);transition:transform .2s">+</span>'
     + '</div>'
-    + '<div id="' + uid + '" style="display:none;margin-top:10px">' + cardsHtml + '</div>'
+    + '<div id="' + uid + '" style="display:none;margin-top:10px">' + articlesHtml + cardsHtml + '</div>'
     + '</div>';
 }
 function toggleFrameAcc(uid) {
